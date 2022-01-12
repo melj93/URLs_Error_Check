@@ -25,7 +25,7 @@ def check_url(urls):
             code = e.getcode()
             print(i, url[0], code) ## 404
             error_url.append(url[0])
-    print("These are 404:", error_url)
+    print("These are 404:\n", *error_url, sep="\n")
             
 def write_error_on_txt():
     textfile = open("link404.txt", "w")
@@ -36,7 +36,8 @@ def write_error_on_txt():
 
 def main():
     all_URL_list = read_URLs()
+    print(all_URL_list)
     check_url(all_URL_list)
-    # write_error_on_txt()
+    write_error_on_txt()
     
 main()
