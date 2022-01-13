@@ -1,14 +1,16 @@
+from os import sep
 import webbrowser as wb
 
 urls = []
 
-e404: str = "link404" # 열고싶은 파일 에러코드를 적으시오.
-e403: str = "link403" 
-ne: str = "all_URLs"
-file_name = e403
+file_name_dict = {"e404" : "link404", 
+             "e403" : "link403",
+             "ne" : "all_URLs"
+             }
 
-def txt_to_url_list():
+def txt_to_url_list(file_name: str):
     a_file = open("{}.txt".format(file_name), "r")
+    print("{}file openned.")
     url_list = []
     for i, line in enumerate(a_file):
         stripped_line = line.strip()
@@ -25,6 +27,12 @@ def open_urls(urls: list):
     for i, url in enumerate(urls):
         wb.open(url)
 
-urls = txt_to_url_list()
-
-open_urls(urls)
+def main():
+    file_name = input("Choice one [e404, e403, ne] :")
+    print(file_name)
+    # 키를 입력받아 값을 str로 저장해서 함수에 넣어야함
+    val = file_name_dict['{}'.format(file_name)]
+    urls = txt_to_url_list(val)
+    open_urls(urls)
+    
+main()
