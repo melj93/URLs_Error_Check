@@ -1,8 +1,33 @@
+import numpy as np
+import requests
+from bs4 import BeautifulSoup
 import urllib.request 
 from urllib.error import URLError, HTTPError
 
 all_URL_list = []
 error_url = []
+
+# def extractURLs():  # 보완해야함
+#     url: str = "https://api.fanarcade.net/admin/shop/product/?o=-1.-7&p=20"
+#     response = requests.get(url)
+#     #parse html
+#     page = str(BeautifulSoup(response.content))
+#     def getURL(page):
+#         start_link = page.find("field-productUrl")
+#         if start_link == -1:
+#             return None, 0
+#         start_quote = page.find('>', start_link)
+#         end_quote = page.find('<', start_quote + 1)
+#         url = page[start_quote + 1: end_quote]
+#         return url, end_quote
+    
+    # while True:
+    #     url, n = getURL(page)
+    #     page = page[n:]
+    #     if url:
+    #         print(url)
+    #     else:
+    #         break
 
 def read_URLs():
     a_file = open("all_URLs.txt", "r")
@@ -36,8 +61,12 @@ def write_error_on_txt():
 
 def main():
     all_URL_list = read_URLs()
-    print(all_URL_list)
+    how_many_url = str(np.shape(all_URL_list))
+    print("How many url: {}".format(how_many_url))
     check_url(all_URL_list)
+    how_many_404 = str(np.shape(error_url))
+    print("How many 404: {}".format(error_url))
+    
     write_error_on_txt()
     
 main()
