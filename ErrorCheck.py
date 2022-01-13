@@ -24,11 +24,11 @@ def check_url(urls):
     for i, url in enumerate(urls):
         try:
             res = urllib.request.urlopen(url[0])
-            print(i, url[0], res.status)
+            print(i, res.status)
         except HTTPError as e:
             err = e.read()
             code = e.getcode()
-            print(i, url[0], code) ## 404
+            print(i, code) ## 404
             if code == 404:
                 error_url404.append(url[0])
             else:
