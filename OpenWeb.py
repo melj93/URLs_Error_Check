@@ -25,7 +25,7 @@ def txt_to_url_list(file_name):
         url_list = []
         for i, line in enumerate(a_file):
             if i > 9:
-                print("url {} openned.".format(i - 1))
+                print("url {} openned.".format(i))
                 bool_20 = True
                 break
             stripped_line = line.strip()
@@ -53,13 +53,11 @@ def delte_lines(file_name, urls):
     for i, line in enumerate(lines): 
         if i < len(urls): # pass해서 지우고, else에서 덮어씀.
             cnt_d = i + 1
-            print("Delete lines---")
             pass
         else:
             file_edit.write(line)
         
     file_edit.close()
-    
     print("Deleted {} lines.".format(cnt_d))
     print("{} lines remain.".format(len(lines) - cnt_d)) # Count remainning lines
 

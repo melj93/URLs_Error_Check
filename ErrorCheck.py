@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 import urllib.request 
 from urllib.error import URLError, HTTPError
-import webbrowser as wb
 import OpenWeb as op
 
 all_URL_list = []
@@ -64,7 +63,7 @@ def check_url(urls):
         except HTTPError as e:
             err = e.read()
             code = e.getcode()
-            print("  {} {} <--".format(i+1, code)) ## 404
+            print("  {} {} <--".format(i+1, code)) ## 404, 403, etc
             if code == 404:
                 error_url404.append(url)
             else:
@@ -106,6 +105,5 @@ def main():
     write_error_on_txt()
     
 main()
-
 op.main()
 op.main()
