@@ -7,6 +7,7 @@ import webbrowser as wb
 import OpenWeb as op
 
 all_URL_list = []
+url200 = []
 error_url404 = []
 error_url403 = []
 # 문자열 전처리 함수
@@ -55,11 +56,15 @@ def check_url(urls):
     for i, url in enumerate(urls):
         try:
             res = urllib.request.urlopen(url)
-            print(i+1, res.status)
+            if res.status == 200:
+                print("  {} {}".format(i+1, res.status))
+                url200.append(url)
+            else:
+                print("  {} {}, non 200 <--".format(i+1, res.status))
         except HTTPError as e:
             err = e.read()
             code = e.getcode()
-            print("{} {} <--".format(i+1, code)) ## 404
+            print("  {} {} <--".format(i+1, code)) ## 404
             if code == 404:
                 error_url404.append(url)
             else:
@@ -76,7 +81,12 @@ def write_error_on_txt():
         textfile403.write(line + "\n")
     textfile403.close()
     
-    print("Write Error done.")
+    textfile200 = open("link200.txt", "w")
+    for line in url200:
+        textfile200.write(line + "\n")
+    textfile200.close()
+    
+    print("Write 200 & Error done.")
 
 
 def main():
