@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import urllib.request 
 from urllib.error import URLError, HTTPError
 import webbrowser as wb
-
 import OpenWeb as op
 
 all_URL_list = []
@@ -30,7 +29,7 @@ def pre_str_setting():
         else:
             print("Can't find https")
         cnt = i
-    print("Moving mixed to all : {} moved".format(cnt))
+    print("Moving mixed to all : {} moved".format(cnt+1))
     
     file_all_urls = open("all_URLs.txt", "w")
     for line in url_list:
@@ -97,4 +96,6 @@ def main():
     write_error_on_txt()
     
 main()
+
+op.main()
 op.main()
