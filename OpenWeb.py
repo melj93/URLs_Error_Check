@@ -79,4 +79,3 @@ def main():
         delte_lines(file_name_val, urls)
     else:
         pass
-main()
