@@ -13,7 +13,7 @@ error_url403 = []
 def pre_str_setting():
     mixed_url_list = []
     url_list = []
-    
+    cnt = 0
     mixed_txt = open("MixedURLs.txt", "r")
     for line in mixed_txt:
         stripped_line = line.strip()
@@ -27,7 +27,8 @@ def pre_str_setting():
             url_list.append(add_url)
         else:
             print("Can't find https")
-    print("Moving mixed to all")
+        cnt = i
+    print("Moving mixed to all : {} moved".format(cnt))
     
     file_all_urls = open("all_URLs.txt", "w")
     for line in url_list:
@@ -57,12 +58,11 @@ def check_url(urls):
         except HTTPError as e:
             err = e.read()
             code = e.getcode()
-            print(i+1, code) ## 404
+            print("{}-{}".format(i+1, code)) ## 404
             if code == 404:
                 error_url404.append(url)
             else:
                 error_url403.append(url)
-    print("These are 404:\n", *error_url404, sep="\n")
             
 def write_error_on_txt():
     textfile404 = open("link404.txt", "w")
@@ -83,11 +83,14 @@ def main():
     all_URL_list = read_URLs()
     check_url(all_URL_list)
     
+    # -------- info --------
     print("How many url: {}".format(len(all_URL_list)))
     print("How many 404: {}".format(len(error_url404)))
     print("How many 403: {}".format(len(error_url403)))
     print("first url : {}".format(all_URL_list[0]))
     print("last url : {}".format(all_URL_list[-1]))
+    print("These are 404:\n", *error_url404, sep="\n")
+    # -------- info --------
     
     write_error_on_txt()
     

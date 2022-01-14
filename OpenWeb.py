@@ -8,16 +8,16 @@ file_name_dict = {"e404" : "link404",
              "ne" : "all_URLs"
              }
 
-def txt_to_url_list(file_name: str):
+def txt_to_url_list(file_name):
     a_file = open("{}.txt".format(file_name), "r")
     print("{}file openned.")
     url_list = []
     for i, line in enumerate(a_file):
-        stripped_line = line.strip()
-        line_list = stripped_line.split()
-        if line_list[0][:1] == "#":
+        if i == 20:
             print("url {} openned.".format(i))
             break
+        stripped_line = line.strip()
+        line_list = stripped_line.split()
         print(i, line_list[0])
         url_list.append(line_list[0])
     return url_list
