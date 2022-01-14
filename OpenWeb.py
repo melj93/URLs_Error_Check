@@ -1,7 +1,13 @@
 from os import sep
 import webbrowser as wb
 
-urls = []
+urls = [] # Web에서 Open할 urls
+"""
+너무 많은 url을 열면 좀 부담스러워서
+조건문: 아래 txt_to_url_list() i > 20
+으로 갯수를 정하고 있음.
+input으로 갯수 값을 받아서 수정하는 방안으로 갈거임.
+"""
 file_name_dict = {"404" : "link404", 
              "403" : "link403",
              "200" : "link200",
@@ -9,12 +15,16 @@ file_name_dict = {"404" : "link404",
              }
 
 def txt_to_url_list(file_name):
+    """파일 열고, 
+    url_list에 Insert text line by line, 
+    20번 넘을시 20번넘었다는 bool값에 True넣고 종료.
+    """
     bool_20 = False
     with open("{}.txt".format(file_name), "r") as a_file:
         print("{}file openned.".format(file_name))
         url_list = []
         for i, line in enumerate(a_file):
-            if i > 20:
+            if i > 9:
                 print("url {} openned.".format(i - 1))
                 bool_20 = True
                 break
@@ -30,20 +40,28 @@ def open_urls(urls: list):
     for i, url in enumerate(urls):
         wb.open(url)
         
-def delte_20lines(file_name):
-    print("delete 20 lines activated")
+def delte_lines(file_name, urls):
+    """앞에 읽은 url들 txt파일에서 삭제하고 저장하는 함수. 읽은 만큼 지우기."""
+    cnt_d  = 0 # count deleted line.
+    numb_d = len(urls) # 지울 url 갯수
+    print("Delete lines activated", file_name)
     file_to_edit = open("{}.txt".format(file_name), "r")
     lines = file_to_edit.readlines()
     file_to_edit.close()
     
-    print(lines)
-    
     file_edit = open("{}.txt".format(file_name), "w")
-    for i, line in enumerate(lines):
-        print("{} --- {}".format(line, urls[i]))
-        # if line in lines:
-        #     file_edit.write(line)
+    for i, line in enumerate(lines): 
+        if i < len(urls): # pass해서 지우고, else에서 덮어씀.
+            cnt_d = i + 1
+            print("Delete lines---")
+            pass
+        else:
+            file_edit.write(line)
+        
     file_edit.close()
+    
+    print("Deleted {} lines.".format(cnt_d))
+    print("{} lines remain.".format(len(lines) - cnt_d)) # Count remainning lines
 
 def main():
     bool_20 = False
@@ -52,55 +70,13 @@ def main():
         print("Terminating OpenWeb")
         return
     # 키를 입력받아 값을 str로 저장해서 함수에 넣어야함
-    val = file_name_dict['{}'.format(file_name)]
-    urls, bool_20 = txt_to_url_list(val)
+    file_name_val = file_name_dict['{}'.format(file_name)]
+    urls, bool_20 = txt_to_url_list(file_name_val)
     print("last bool: {}".format(bool_20))
-    if bool_20 == True:
-        delte_20lines(file_name)
-    else:
-        pass
-    # open_urls(urls)
-#main()
-
-ex_url = [
-    "https://kpopmart.com/bigbang/2855-bigbang-arttoy-sticker.html", 
-"https://kpopmart.com/bigbang/2879-5845-bigbang-krunk-x-bigbang-baebae-ver.html#/455-bigbang-daesung",
-"https://kpopmart.com/bigbang/2880-5849-bigbang-krunk-x-bigbang-baebae-ballpen.html#/455-bigbang-daesung",
-"https://kpopmart.com/bigbang/2890-bigbang-made-ballpen-set-monami-153.html", 
-"https://kpopmart.com/bigbang/2893-5856-bigbang-copy.html#/455-bigbang-daesung", 
-"https://kpopmart.com/bigbang/2904-bigbang-copy.html", 
-"https://kpopmart.com/bigbang/2912-5896-bigbang-copy.html#/28-ver-a",
-"https://kpopmart.com/bigbang/2943-bigbang-made-shower-curtain.html",
-"https://kpopmart.com/bigbang/2951-5932-bigbang-made-jacket.html#/2-size-m",
-"https://kpopmart.com/bigbang/2957-bigbang-made-strap-bracelet.html",
-"https://kpopmart.com/bigbang/2969-5958-bigbang-made-t-shirts-vermade.html#/2-size-m",
-"https://kpopmart.com/bigbang/2976-bigbang-copy.html",
-"https://kpopmart.com/bigbang/2983-bigbang-copy.html",
-"https://kpopmart.com/bigbang/2986-bigbang-copy.html",
-"https://kpopmart.com/bigbang/2989-bigbang-copy.html",
-"https://kpopmart.com/bigbang/2993-bigbang-10th-bigbang-weekly-planner.html",
-"https://kpopmart.com/bigbang/2995-bigbang-copy.html",
-"https://kpopmart.com/bigbang/3009-bigbang-10th-bigbang-coloring-book.html",
-"https://kpopmart.com/bigbang/3013-bigbang-10th-bigbang-pencil-set.html",
-"https://kpopmart.com/bigbang/3031-bigbang-10th-bigbang-pocket-blanket.html",
-]
-
-file_to_edit = open("{}.txt".format("link200"), "r")
-lines = file_to_edit.readlines()
-file_to_edit.close()
-
-file_edit = open("{}.txt".format("link200"), "w")
-cnt_d  = 0
-cnt_r = 0
-for i, line in enumerate(lines):
-    if i < 20:
-        print("Delete line, {}".format(i+1))
-        cnt = i + 1
-        pass
-    else:
-        print("Write lines again.".format(i+1))
-        file_edit.write(line)
+    open_urls(urls) # url 열기 20개 단위로.
     
-file_edit.close()
-print("Deleted {} lines.".format(cnt_d))
-print("{} lines remain.".format(cnt_r))
+    if bool_20 == True: # 읽은 
+        delte_lines(file_name_val, urls)
+    else:
+        pass
+main()
