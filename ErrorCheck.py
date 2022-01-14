@@ -96,6 +96,5 @@ def main():
     
     write_error_on_txt()
     
-    op.main()
-    
 main()
+op.main()
