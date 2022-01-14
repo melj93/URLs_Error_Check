@@ -53,17 +53,22 @@ def read_URLs():
 
 def check_url(urls):
     for i, url in enumerate(urls):
+        cnt = i + 1
+        if i < 10:
+            cnt = str(cnt).zfill(2)
+        else:
+            pass
         try:
             res = urllib.request.urlopen(url)
             if res.status == 200:
-                print("  {} {}".format(i+1, res.status))
+                print("  {} {}".format(cnt, res.status))
                 url200.append(url)
             else:
-                print("  {} {}, non 200 <--".format(i+1, res.status))
+                print("  {} {}, non 200 <--".format(cnt, res.status))
         except HTTPError as e:
             err = e.read()
             code = e.getcode()
-            print("  {} {} <--".format(i+1, code)) ## 404, 403, etc
+            print("  {} {} <--".format(cnt, code)) ## 404, 403, etc
             if code == 404:
                 error_url404.append(url)
             else:
