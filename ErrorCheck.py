@@ -5,6 +5,8 @@ import urllib.request
 from urllib.error import URLError, HTTPError
 import webbrowser as wb
 
+import OpenWeb as op
+
 all_URL_list = []
 error_url404 = []
 error_url403 = []
@@ -58,7 +60,7 @@ def check_url(urls):
         except HTTPError as e:
             err = e.read()
             code = e.getcode()
-            print("{}-{}".format(i+1, code)) ## 404
+            print("{} {} <--".format(i+1, code)) ## 404
             if code == 404:
                 error_url404.append(url)
             else:
@@ -93,5 +95,7 @@ def main():
     # -------- info --------
     
     write_error_on_txt()
+    
+    op.main()
     
 main()
