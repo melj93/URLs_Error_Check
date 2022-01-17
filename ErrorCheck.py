@@ -81,18 +81,25 @@ def check_url(urls):
                 error_url403.append(url)
                 
         except UnicodeEncodeError as ue:
-            find_kor = re.compile('[가-힣]+').findall(url)
-            print(cnt, find_kor[0], "has been quoted.")
-            query = quote(find_kor[0])
-            url = url.replace(find_kor[0], query)
-            req = urllib.request.Request(url, headers=header)
-            res = urllib.request.urlopen(req)
-            if res.status == 200:
-                print("  {} {}".format(cnt, res.status))
-                url200.append(url)
-            else:
+            print("UnicodeEncodeError found.")
+            try:
+                find_kor = re.compile('[가-힣]+').findall(url)
+                print(cnt, find_kor[0], "has been quoted.")
+                query = quote(find_kor[0])
+                url = url.replace(find_kor[0], query)
+                req = urllib.request.Request(url, headers=header)
+                res = urllib.request.urlopen(req)
+                if res.status == 200:
+                    print("  {} {}".format(cnt, res.status))
+                    url200.append(url)
+                else:
+                    print("{} {}<-- UnicodeEncodeError".format(cnt, url))
+                    error_url403.append(url)
+            except:
                 print("{} {}<-- UnicodeEncodeError".format(cnt, url))
+                print(url.encode('utf8'))
                 error_url403.append(url)
+                pass
             
             
 def write_error_on_txt():
