@@ -79,13 +79,21 @@ def check_url(urls):
                 error_url404.append(url)
             else:
                 error_url403.append(url)
+                
         except UnicodeEncodeError as ue:
-            print("{} {}<-- UnicodeEncodeError".format(cnt, url))
-            error_url403.append(url)
             find_kor = re.compile('[가-힣]+').findall(url)
-            # print(find_kor[0], "has been quoted.")
-            # query = quote(find_kor[0])
-            # print(url.find(find_kor[0]))
+            print(cnt, find_kor[0], "has been quoted.")
+            query = quote(find_kor[0])
+            url = url.replace(find_kor[0], query)
+            req = urllib.request.Request(url, headers=header)
+            res = urllib.request.urlopen(req)
+            if res.status == 200:
+                print("  {} {}".format(cnt, res.status))
+                url200.append(url)
+            else:
+                print("{} {}<-- UnicodeEncodeError".format(cnt, url))
+                error_url403.append(url)
+            
             
 def write_error_on_txt():
     textfile404 = open("link404.txt", "w")
