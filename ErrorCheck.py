@@ -1,9 +1,12 @@
+from gettext import find
 import numpy as np
 import requests
 from bs4 import BeautifulSoup
 import urllib.request 
 from urllib.error import URLError, HTTPError
 import OpenWeb as op
+from urllib.parse  import quote
+import re
 
 all_URL_list = []
 url200 = []
@@ -76,6 +79,13 @@ def check_url(urls):
                 error_url404.append(url)
             else:
                 error_url403.append(url)
+        except UnicodeEncodeError as ue:
+            print("{} {}<-- UnicodeEncodeError".format(cnt, url))
+            error_url403.append(url)
+            find_kor = re.compile('[가-힣]+').findall(url)
+            # print(find_kor[0], "has been quoted.")
+            # query = quote(find_kor[0])
+            # print(url.find(find_kor[0]))
             
 def write_error_on_txt():
     textfile404 = open("link404.txt", "w")
