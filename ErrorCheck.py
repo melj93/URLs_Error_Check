@@ -28,8 +28,8 @@ def pre_str_setting():
             url_list.append(add_url)
         else:
             print("Can't find https")
-        cnt = i
-    print("Moving mixed to all : {} moved".format(cnt+1))
+        cnt = i + 1
+    print("Moving mixed to all : {} moved".format(cnt))
     
     file_all_urls = open("all_URLs.txt", "w")
     for line in url_list:
@@ -59,7 +59,10 @@ def check_url(urls):
         else:
             pass
         try:
-            res = urllib.request.urlopen(url)
+            header = {'User-Agent' : 'Chrome/97.0.4692.71'}
+            req = urllib.request.Request(url, headers=header)
+            res = urllib.request.urlopen(req)
+            
             if res.status == 200:
                 print("  {} {}".format(cnt, res.status))
                 url200.append(url)
